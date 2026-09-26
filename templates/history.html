@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ScamShield History</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>📚 ScamShield History</h1>
+
+    <p class="subtitle">
+        Previous message analyses
+    </p>
+
+    <a href="/" style="text-decoration:none;">
+        ← Analyze New Message
+    </a>
+
+    {% if scans %}
+
+        {% for scan in scans %}
+
+        <div class="result">
+
+            <h3>Scan #{{ scan[0] }}</h3>
+
+            <p><strong>Message:</strong></p>
+            <p>{{ scan[1] }}</p>
+
+            <p><strong>Risk:</strong> {{ scan[2] }}</p>
+            <p><strong>Score:</strong> {{ scan[3] }}/100</p>
+            <p><strong>Category:</strong> {{ scan[4] }}</p>
+            <p><strong>Confidence:</strong> {{ scan[5] }}%</p>
+            <p><strong>Attacker Intent:</strong> {{ scan[6] }}</p>
+
+        </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <p>No scan history available.</p>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

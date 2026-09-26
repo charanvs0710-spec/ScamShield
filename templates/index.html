@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ScamShield | AI Scam Detection</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="shield">
+                SS
+            </div>
+
+            <div>
+                <h1>ScamShield</h1>
+                <p>AI-powered scam detection</p>
+            </div>
+
+        </div>
+
+        <div class="status">
+            <span></span>
+            System Online
+        </div>
+
+    </header>
+
+
+    <!-- HERO -->
+    <section class="hero">
+
+        <div class="badge">
+            AI SECURITY ANALYZER
+        </div>
+
+        <h2>
+            Detect suspicious messages
+            <span>before they become a threat.</span>
+        </h2>
+
+        <p>
+            Analyze suspicious messages using security signals,
+            risk scoring and explainable detection.
+        </p>
+
+    </section>
+
+
+    <!-- MESSAGE ANALYZER -->
+    <section class="analyzer">
+
+        <div class="section-title">
+
+            <div>
+                <small>MESSAGE ANALYZER</small>
+                <h3>Check a suspicious message</h3>
+            </div>
+
+            <div class="secure">
+                Secure Analysis
+            </div>
+
+        </div>
+
+
+        <form method="POST">
+
+            <textarea
+                name="message"
+                placeholder="Paste a suspicious SMS, email, WhatsApp message or link here..."
+                required>{{ message }}</textarea>
+
+
+            <div class="input-info">
+                <span>Never enter real passwords or OTPs.</span>
+                <span>ScamShield</span>
+            </div>
+
+
+            <button type="submit">
+                Analyze Message
+            </button>
+
+        </form>
+
+    </section>
+
+
+    {% if risk %}
+
+    <!-- RESULT -->
+    <section class="result">
+
+        <div class="result-header">
+
+            <div>
+                <small>ANALYSIS COMPLETE</small>
+                <h3>Security Assessment</h3>
+            </div>
+
+            <div class="analyzed">
+                Analyzed
+            </div>
+
+        </div>
+
+
+        <!-- RISK -->
+        <div class="risk-banner">
+
+            <div>
+                <small>RISK LEVEL</small>
+
+                <h2>
+                    {{ risk }}
+                </h2>
+            </div>
+
+            <div class="risk-score">
+
+                <small>RISK SCORE</small>
+
+                <strong>{{ score }}</strong>
+                <span>/100</span>
+
+            </div>
+
+        </div>
+
+
+        <!-- MAIN RESULT CARDS -->
+        <div class="cards">
+
+
+            <!-- SCORE -->
+            <div class="card">
+
+                <small>RISK SCORE</small>
+
+                <div class="big-icon">
+                    Score
+                </div>
+
+                <div class="score">
+                    <strong>{{ score }}</strong>
+                    <span>/100</span>
+                </div>
+
+                <div class="progress">
+
+                    <div class="progress-bar"
+                         style="width: {{ score }}%;">
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- CATEGORY -->
+            <div class="card">
+
+                <small>SCAM CATEGORY</small>
+
+                <div class="big-icon">
+                    Category
+                </div>
+
+                <h4>
+                    {{ category }}
+                </h4>
+
+            </div>
+
+
+            <!-- CONFIDENCE -->
+            <div class="card">
+
+                <small>DETECTION CONFIDENCE</small>
+
+                <div class="big-icon">
+                    AI
+                </div>
+
+                <div class="score">
+                    <strong>{{ confidence }}%</strong>
+                </div>
+
+                <p>
+                    Based on detected signals.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ATTACKER INTENT -->
+        <div class="intent">
+
+            <div class="intent-icon">
+                AI
+            </div>
+
+            <div>
+
+                <small>LIKELY ATTACKER INTENT</small>
+
+                <p>
+                    {{ intent }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ALL WARNING SIGNS -->
+        <div class="warnings">
+
+            <div class="warning-header">
+
+                <div>
+
+                    <small>DETECTION EVIDENCE</small>
+
+                    <h3>
+                        Warning Signs Detected
+                    </h3>
+
+                </div>
+
+                <div class="count">
+                    {{ reasons|length }} signals
+                </div>
+
+            </div>
+
+
+            <div class="warning-list">
+
+                {% for reason in reasons %}
+
+                <div class="warning-item">
+
+                    <span class="warning-icon">
+                        !
+                    </span>
+
+                    <span>
+                        {{ reason }}
+                    </span>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <!-- ACTION -->
+        {% if score >= 70 %}
+
+        <div class="action danger">
+
+            <div class="action-icon">
+                !
+            </div>
+
+            <div>
+
+                <strong>DO NOT INTERACT</strong>
+
+                <p>
+                    Do not click links, send money, or share
+                    OTPs, passwords or sensitive information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% elif score >= 35 %}
+
+        <div class="action warning">
+
+            <div class="action-icon">
+                !
+            </div>
+
+            <div>
+
+                <strong>VERIFY BEFORE RESPONDING</strong>
+
+                <p>
+                    Verify the message through an official source
+                    before clicking links or providing information.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% else %}
+
+        <div class="action safe-action">
+
+            <div class="action-icon">
+                OK
+            </div>
+
+            <div>
+
+                <strong>NO MAJOR WARNING SIGNALS</strong>
+
+                <p>
+                    No major warning signals were detected.
+                    Continue to remain cautious.
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+    {% endif %}
+
+
+    <!-- FOOTER -->
+    <footer>
+
+        <span>
+            ScamShield
+        </span>
+
+        <span>
+            Explainable AI Scam Detection
+        </span>
+
+    </footer>
+
+</div>
+
+</body>
+
+</html>
